@@ -78,12 +78,31 @@ describe Viking do
       default_viking.receive_attack(damage)
       expect(default_viking.health).to eq(starting_health - damage)
     end
+
+    it 'calls the take damage method on the viking' do
+      expect(default_viking).to receive(:take_damage).with(3)
+      default_viking.receive_attack(3)
+    end
   end
 
   describe "#attack" do
-    target_viking = Viking.new
-    allow(default_viking).to receive(:damage_dealt).and_return(1)
-    expect(target_viking).to receive(:receive_attack).with(damage)
+    let(:target_viking) { Viking.new }
+    it 'reduces the targets health by some number' do
+      damage = 1
+      starting_health = target_viking.health
+      allow(default_viking).to receive(:damage_dealt).and_return(damage)
+      default_viking.attack(target_viking)
+      expect(target_viking.health).to eq(starting_health - damage)
+    end
+
+    it 'causes the take damage methond on the target' do
+      damage = 1
+      allow(default_viking).to receive(:damage_dealt).and_return(damage)
+      # ^ DRY me out
+      expect(target_viking).to receive(:take_damage).with(damage)
+      default_viking.attack(target_viking)
+    end
+
   end
 
 end
