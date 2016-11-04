@@ -87,19 +87,28 @@ describe Viking do
 
   describe "#attack" do
     let(:target_viking) { Viking.new }
+    let(:damage) { 1 }
+
     it 'reduces the targets health by some number' do
-      damage = 1
-      starting_health = target_viking.health
       allow(default_viking).to receive(:damage_dealt).and_return(damage)
+      starting_health = target_viking.health
       default_viking.attack(target_viking)
       expect(target_viking.health).to eq(starting_health - damage)
     end
 
-    it 'causes the take damage methond on the target' do
-      damage = 1
+    it 'calls the #take_damage method on the target' do
       allow(default_viking).to receive(:damage_dealt).and_return(damage)
-      # ^ DRY me out
       expect(target_viking).to receive(:take_damage).with(damage)
+      default_viking.attack(target_viking)
+    end
+
+    it 'runs #damage_with_fist if viking has no weapon' do
+      expect(default_viking).to receive(:damage_with_fists).and_return(damage)
+      default_viking.attack(target_viking)
+    end
+
+    it "attacking with no weapon deals Fists multiplier times strength damage" do
+      expect(target_viking).to receive(:take_damage).with(2.5)
       default_viking.attack(target_viking)
     end
 
