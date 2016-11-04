@@ -3,6 +3,7 @@ require 'viking'
 
 describe Viking do
   let(:default_viking) { Viking.new }
+  before { allow(STDOUT).to receive(:puts) }
 
   describe '#initialize' do
     describe 'custom configuration' do
@@ -62,8 +63,27 @@ describe Viking do
   end
 
   describe '#drop_weapon' do
-    it 'sets the vikings weapon' do
+    it 'sets the vikings weapon to nothing' do
+      weapon = "axe"
+      viking_with_weapon = Viking.new("", 10, 10, weapon)
+      viking_with_weapon.drop_weapon
+      expect(viking_with_weapon.weapon).to be nil
     end
+  end
+
+  describe "#receive_attack" do
+    it 'reduces viking\'s health by given amount' do
+      damage = 3
+      starting_health = default_viking.health
+      default_viking.receive_attack(damage)
+      expect(default_viking.health).to eq(starting_health - damage)
+    end
+  end
+
+  describe "#attack" do
+    target_viking = Viking.new
+    allow(default_viking).to receive(:damage_dealt).and_return(1)
+    expect(target_viking).to receive(:receive_attack).with(damage)
   end
 
 end
