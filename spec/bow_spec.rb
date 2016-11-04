@@ -27,4 +27,16 @@ describe Bow do
 
   end
 
+  describe "#use" do
+    it "decreases arrow count by one" do
+      bow.use
+      expect(bow.arrows).to eq(9)
+    end
+
+    it "throws an error if arrow count is 0" do
+      empty_bow = Bow.new(0)
+      expect{ empty_bow.use }.to raise_error(RuntimeError)
+    end
+  end
+
 end
