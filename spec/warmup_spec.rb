@@ -30,12 +30,29 @@ describe Warmup do
 
 
   describe '#calls_some_methods' do
-    let(:string) { double }
+    let(:string) do
+      double("String")
+    end
 
-    it 'calls upcase! on argument string'
+    before(:each) do
+      allow(string).to receive(:empty?).and_return(false)
+      allow(string).to receive(:upcase!).and_return(string)
+      allow(string).to receive(:reverse!)
+    end
 
-    it 'calls reverse! on argument string'
+    it 'calls upcase! on argument string' do
+      expect(string).to receive(:upcase!)
+      warmup.calls_some_methods(string)
+    end
 
-    it 'returns unique object'
+    it 'calls reverse! on argument string' do
+      expect(string).to receive(:reverse!)
+      warmup.calls_some_methods(string)
+    end
+
+    it 'returns unique object' do
+      returned_string = warmup.calls_some_methods(string)
+      expect(returned_string.object_id).not_to eql(string.object_id)
+    end
   end
 end
