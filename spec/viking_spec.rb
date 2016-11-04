@@ -36,7 +36,7 @@ describe Viking do
   describe '#pick_up_weapon' do
     it 'raises an error unless argument is a weapon' do
       harmless = double
-      expect { default_viking.pick_up_weapon(harmless) }.to raise_error(RuntimeError)
+      expect { default_viking.pick_up_weapon(harmless) }.to raise_error("Can't pick up that thing")
     end
 
     context 'passed valid argument' do
@@ -136,7 +136,8 @@ describe Viking do
     end
 
     it 'a viking to 0 or less health raises an error' do
-      unhealthy_viking = Viking.new
+      unhealthy_viking = Viking.new('Keith', 0)
+      expect{ unhealthy_viking.receive_attack(damage)}.to raise_error("Keith has Died...")
     end
   end
 

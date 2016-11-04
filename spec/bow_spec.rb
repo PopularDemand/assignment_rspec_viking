@@ -35,7 +35,7 @@ describe Bow do
 
     it "throws an error if arrow count is 0" do
       empty_bow = Bow.new(0)
-      expect{ empty_bow.use }.to raise_error(RuntimeError)
+      expect{ empty_bow.use }.to raise_error(RuntimeError) # Should be RuntimeError? or Actual message?
     end
   end
 
