@@ -7,7 +7,7 @@ class Warmup
   def gets_shout
     shout = gets.chomp.upcase
     # shout = self.gets.chomp.upcase
-    # self.gets should evaluate to "string "
+    # self.gets should evaluate to "string\n"
 
     # This is a side effect. Test it if you'd like!
     # (optional).

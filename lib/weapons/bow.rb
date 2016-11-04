@@ -1,8 +1,9 @@
+
 require_relative 'weapon'
 
 class Bow < Weapon
   attr_reader :arrows
-  
+
   def initialize(arrows = 10)
     super("Bow", 2)
     @arrows = arrows
