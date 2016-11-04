@@ -13,7 +13,6 @@ class Viking
     @weapon = weapon
   end
 
-
   def attack(target)
     puts "#{name} is attacking #{target.name}!"
     target.receive_attack(damage_dealt)

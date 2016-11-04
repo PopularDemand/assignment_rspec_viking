@@ -107,11 +107,37 @@ describe Viking do
       default_viking.attack(target_viking)
     end
 
-    it "attacking with no weapon deals Fists multiplier times strength damage" do
+    it 'deals damage based on fist multiplier times strength when Viking has no weapon' do
+      # 2.5 comes from fist multiplier of .25 and str = 10
       expect(target_viking).to receive(:take_damage).with(2.5)
       default_viking.attack(target_viking)
     end
 
+    it 'attacking with a weapon calls damage_with_weapon' do
+      weapon = double(is_a?: true)
+      default_viking.pick_up_weapon(weapon)
+      expect(default_viking).to receive(:damage_with_weapon).and_return(0)
+      default_viking.attack(target_viking)
+    end
+
+    it 'attacking with a weapon deals damage equal to the vikings strength times the weapon\'s multiplier' do
+      weapon = double(use: 7, is_a?: true)
+      default_viking.pick_up_weapon(weapon)
+      expect(target_viking).to receive(:take_damage).with(70)
+      default_viking.attack(target_viking)
+    end
+
+    it 'attacking with an empty bow uses fists instead' do
+      bow = double("bow", is_a?: true, out_of_arrows?: true)
+      allow(bow).to receive(:use).and_raise("Out of arrows")
+      default_viking.pick_up_weapon(bow)
+      expect(default_viking).to receive(:damage_with_fists).and_return(0)
+      default_viking.attack(target_viking)
+    end
+
+    it 'a viking to 0 or less health raises an error' do
+      unhealthy_viking = Viking.new
+    end
   end
 
 end
